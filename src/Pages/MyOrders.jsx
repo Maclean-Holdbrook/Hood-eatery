@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ordersAPI } from '../services/api';
 import socketService from '../services/socket';
-import Loading from '../components/Loading';
+import Loading from '../Components/Loading';
 import { FaEye, FaCheckCircle } from 'react-icons/fa';
 
 const MyOrders = () => {

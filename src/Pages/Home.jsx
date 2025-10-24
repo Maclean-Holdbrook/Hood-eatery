@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { menuAPI } from '../services/api';
-import MenuItem from '../components/MenuItem';
-import Loading from '../components/Loading';
-import HeroCarousel from '../components/HeroCarousel';
+import MenuItem from '../Components/MenuItem';
+import Loading from '../Components/Loading';
+import HeroCarousel from '../Components/HeroCarousel';
 
 const Home = () => {
   const [categories, setCategories] = useState([]);

@@ -3,29 +3,29 @@ import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 
 // Layout Components
-import Header from './components/Header';
-import Footer from './components/Footer';
-import FloatingBasket from './components/FloatingBasket';
-import AdminLayout from './components/AdminLayout';
-import PrivateRoute from './components/PrivateRoute';
+import Header from './Components/Header';
+import Footer from './Components/Footer';
+import FloatingBasket from './Components/FloatingBasket';
+import AdminLayout from './Components/AdminLayout';
+import PrivateRoute from './Components/PrivateRoute';
 
 // Customer Pages
-import Menu from './pages/Menu';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import Cart from './pages/Cart';
-import Checkout from './pages/Checkout';
-import TrackOrder from './pages/TrackOrder';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import MyOrders from './pages/MyOrders';
+import Menu from './Pages/Menu';
+import About from './Pages/About';
+import Contact from './Pages/Contact';
+import Cart from './Pages/Cart';
+import Checkout from './Pages/Checkout';
+import TrackOrder from './Pages/TrackOrder';
+import Login from './Pages/Login';
+import Register from './Pages/Register';
+import MyOrders from './Pages/MyOrders';
 
 // Admin Pages
-import AdminLogin from './pages/admin/AdminLogin';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminMenu from './pages/admin/AdminMenu';
-import AdminOrders from './pages/admin/AdminOrders';
-import AdminUsers from './pages/admin/AdminUsers';
+import AdminLogin from './Pages/admin/AdminLogin';
+import AdminDashboard from './Pages/admin/AdminDashboard';
+import AdminMenu from './Pages/admin/AdminMenu';
+import AdminOrders from './Pages/admin/AdminOrders';
+import AdminUsers from './Pages/admin/AdminUsers';
 
 import './App.css';
 

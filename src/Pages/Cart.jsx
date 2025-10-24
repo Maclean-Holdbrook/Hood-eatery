@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import CartItem from '../components/CartItem';
+import CartItem from '../Components/CartItem';
 import { FaShoppingBasket } from 'react-icons/fa';
 
 const Cart = () => {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Loading from '../../components/Loading';
+import Loading from '../../Components/Loading';
 import { FaSearch, FaUserShield, FaUser } from 'react-icons/fa';
 
 const AdminUsers = () => {

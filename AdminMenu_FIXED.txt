@@ -1,0 +1,52 @@
+COPY THIS ENTIRE CONTENT AND REPLACE AdminMenu.jsx WITH IT:
+
+The problem is on line 77: missing closing brace } and semicolon ;
+
+Look for this BROKEN code (around line 71-81):
+    if (formData.originalPrice) {
+      data.append('originalPrice', formData.originalPrice)
+
+        if (formData.image) {
+
+And replace the ENTIRE handleSubmit function with this FIXED version:
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const data = new FormData();
+    data.append('categoryId', formData.categoryId);
+    data.append('name', formData.name);
+    data.append('description', formData.description);
+    data.append('price', formData.price);
+    if (formData.originalPrice) {
+      data.append('originalPrice', formData.originalPrice);
+    }
+    data.append('isAvailable', formData.isAvailable);
+    data.append('isFeatured', formData.isFeatured);
+
+    if (formData.image) {
+      data.append('image', formData.image);
+    }
+
+    try {
+      if (editingItem) {
+        await menuAPI.updateMenuItem(editingItem.id, data);
+      } else {
+        await menuAPI.createMenuItem(data);
+      }
+
+      setShowModal(false);
+      setEditingItem(null);
+      resetForm();
+      loadMenu();
+    } catch (err) {
+      console.error('Error saving menu item:', err);
+      alert('Failed to save menu item');
+    }
+  };
+
+KEY CHANGES:
+1. Added semicolon after data.append('originalPrice', formData.originalPrice);
+2. Added closing brace } after the if statement
+3. Added the missing data.append('isAvailable', formData.isAvailable);
+4. Added the missing data.append('isFeatured', formData.isFeatured);

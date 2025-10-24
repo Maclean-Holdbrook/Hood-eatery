@@ -1,0 +1,40 @@
+SYNTAX ERROR FIX FOR AdminMenu.jsx
+
+In the handleSubmit function (around line 71-81), replace this broken code:
+
+BROKEN CODE:
+========================================
+const data = new FormData();
+data.append('categoryId', formData.categoryId);
+data.append('name', formData.name);
+data.append('description', formData.description);
+data.append('price', formData.price);
+if (formData.originalPrice) {
+  data.append('originalPrice', formData.originalPrice)
+
+    if (formData.image) {
+      data.append('image', formData.image);
+    }
+========================================
+
+WITH THIS FIXED CODE:
+========================================
+const data = new FormData();
+data.append('categoryId', formData.categoryId);
+data.append('name', formData.name);
+data.append('description', formData.description);
+data.append('price', formData.price);
+if (formData.originalPrice) {
+  data.append('originalPrice', formData.originalPrice);
+}
+data.append('isAvailable', formData.isAvailable);
+data.append('isFeatured', formData.isFeatured);
+
+if (formData.image) {
+  data.append('image', formData.image);
+}
+========================================
+
+The issue:
+- Line 77 was missing a closing brace } and semicolon ;
+- Missing the isAvailable and isFeatured append statements

@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 
@@ -10,6 +11,7 @@ import AdminLayout from './Components/AdminLayout';
 import PrivateRoute from './Components/PrivateRoute';
 
 // Customer Pages
+import Home from './Pages/Home';
 import Menu from './Pages/Menu';
 import About from './Pages/About';
 import Contact from './Pages/Contact';
@@ -29,6 +31,17 @@ import AdminUsers from './Pages/admin/AdminUsers';
 
 import './App.css';
 
+// Scroll Restoration Component
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 function AppContent() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
@@ -36,6 +49,7 @@ function AppContent() {
   return (
     <AuthProvider>
       <CartProvider>
+        <ScrollToTop />
         {isAdminRoute ? (
           // Admin Layout
           <Routes>
@@ -92,7 +106,7 @@ function AppContent() {
             <main className="main-content">
               <Routes>
                 {/* Public Routes */}
-                <Route path="/" element={<Menu />} />
+                <Route path="/" element={<Home />} />
                 <Route path="/menu" element={<Menu />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />

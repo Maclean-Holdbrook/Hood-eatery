@@ -21,6 +21,7 @@ const Checkout = () => {
   const navigate = useNavigate();
   const { cart, getCartTotal, clearCart, updateQuantity, removeFromCart } = useCart();
   const { user } = useAuth();
+  const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
 
   // Load Google Maps
   const { isLoaded, loadError } = useLoadScript({
@@ -242,7 +243,7 @@ const Checkout = () => {
           {cart.map((item) => (
             <div key={item.id} className="cart-item-card">
               <img
-                src={`http://localhost:5000${item.image_url}`}
+                src={item.image_url?.startsWith('http') ? item.image_url : `${API_URL}${item.image_url}`}
                 alt={item.name}
                 className="cart-item-image"
               />

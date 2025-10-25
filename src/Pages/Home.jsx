@@ -78,13 +78,23 @@ const Home = () => {
 
   return (
     <div className="home-page">
-      <HeroCarousel />
+      {/* Mobile Header Section */}
+      <div className="mobile-header mobile-only">
+        <h1 className="food-delivery-title">Hood Eatery</h1>
+      </div>
+
+      {/* Desktop Hero - only show on desktop */}
+      <div className="desktop-only">
+        <HeroCarousel />
+      </div>
 
       <section className="menu-section">
         <div className="container">
-          <h2>Our Menu</h2>
+          {/* Desktop: Show "Our Menu" title */}
+          <h2 className="desktop-only">Our Menu</h2>
 
           <div className="category-tabs">
+            {/* Show "All Items" button on both mobile and desktop */}
             <button
               className={`category-tab ${selectedCategory === null ? 'active' : ''}`}
               onClick={showAllItems}
@@ -101,6 +111,13 @@ const Home = () => {
               </button>
             ))}
           </div>
+
+          {/* Mobile: Show section heading */}
+          <h2 className="section-heading mobile-only">
+            {selectedCategory
+              ? categories.find(c => c.id === selectedCategory)?.name
+              : 'Protein-rich dishes'}
+          </h2>
 
           {loading ? (
             <Loading />

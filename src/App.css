@@ -1561,6 +1561,13 @@ body {
   min-height: 100vh;
 }
 
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
 .dashboard-title {
   font-size: 2rem;
   font-weight: 700;
@@ -1571,7 +1578,26 @@ body {
 .dashboard-subtitle {
   font-size: 1rem;
   color: #666;
-  margin-bottom: 2rem;
+  margin: 0;
+}
+
+.admin-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #c41e3a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.admin-logout-btn:hover {
+  background-color: #a01729;
 }
 
 /* Dashboard Stats List - Vertical Stacking */

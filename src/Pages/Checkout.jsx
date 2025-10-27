@@ -417,7 +417,6 @@ const Checkout = () => {
                             type="text"
                             placeholder="Enter your delivery address"
                             className="autocomplete-input"
-                            defaultValue={formData.deliveryAddress}
                           />
                         </div>
                       </Autocomplete>

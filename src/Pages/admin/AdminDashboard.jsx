@@ -1,17 +1,25 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ordersAPI } from '../../services/api';
 import socketService from '../../services/socket';
 import Loading from '../../Components/Loading';
-import { FaUsers, FaUtensils, FaCalendarAlt } from 'react-icons/fa';
+import { FaUsers, FaUtensils, FaCalendarAlt, FaSignOutAlt } from 'react-icons/fa';
+import { useAuth } from '../../context/AuthContext';
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
   const [stats, setStats] = useState({
     totalCustomers: 0,
     totalMenuItems: 0,
     totalOrders: 0
   });
   const [loading, setLoading] = useState(true);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/admin/login');
+  };
 
   useEffect(() => {
     loadDashboardData();
@@ -61,8 +69,15 @@ const AdminDashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <h1 className="dashboard-title">Dashboard</h1>
-      <p className="dashboard-subtitle">Welcome to the admin panel</p>
+      <div className="dashboard-header">
+        <div>
+          <h1 className="dashboard-title">Dashboard</h1>
+          <p className="dashboard-subtitle">Welcome to the admin panel</p>
+        </div>
+        <button onClick={handleLogout} className="admin-logout-btn">
+          <FaSignOutAlt /> Logout
+        </button>
+      </div>
 
       <div className="dashboard-stats-list">
         <div className="dashboard-stat-card">

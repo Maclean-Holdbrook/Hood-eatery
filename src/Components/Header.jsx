@@ -100,7 +100,6 @@ const Header = () => {
               </div>
               <div className="profile-info">
                 <h3>{user.fullName || user.name}</h3>
-                <p>{user.phone || user.email}</p>
               </div>
             </div>
 

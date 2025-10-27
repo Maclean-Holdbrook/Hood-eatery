@@ -60,72 +60,72 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div>
-      <h1 className="admin-page-title">Dashboard</h1>
-      <p className="admin-page-subtitle">Welcome to the admin panel</p>
+    <div className="dashboard-container">
+      <h1 className="dashboard-title">Dashboard</h1>
+      <p className="dashboard-subtitle">Welcome to the admin panel</p>
 
-      <div className="admin-stats-grid">
-        <div className="admin-stat-card">
-          <div className="admin-stat-icon">
-            <FaUsers style={{ color: '#5b4fc7', fontSize: '3rem' }} />
+      <div className="dashboard-stats-list">
+        <div className="dashboard-stat-card">
+          <div className="stat-icon-wrapper">
+            <FaUsers style={{ color: '#5b8fc7', fontSize: '3.5rem' }} />
           </div>
-          <div className="admin-stat-info">
-            <div className="admin-stat-label">Total Customers</div>
-            <div className="admin-stat-value">{stats.totalCustomers}</div>
+          <div className="stat-content">
+            <div className="stat-label">TOTAL USERS</div>
+            <div className="stat-number">{stats.totalCustomers}</div>
           </div>
         </div>
 
-        <div className="admin-stat-card">
-          <div className="admin-stat-icon">
-            <FaUtensils style={{ color: '#ffd700', fontSize: '3rem' }} />
+        <div className="dashboard-stat-card">
+          <div className="stat-icon-wrapper">
+            <FaCalendarAlt style={{ color: '#ff6b6b', fontSize: '3.5rem' }} />
           </div>
-          <div className="admin-stat-info">
-            <div className="admin-stat-label">Menu Items</div>
-            <div className="admin-stat-value">{stats.totalMenuItems}</div>
+          <div className="stat-content">
+            <div className="stat-label">TOTAL ORDERS</div>
+            <div className="stat-number">{stats.totalOrders}</div>
           </div>
         </div>
 
-        <div className="admin-stat-card">
-          <div className="admin-stat-icon">
-            <FaCalendarAlt style={{ color: '#5b9aff', fontSize: '3rem' }} />
+        <div className="dashboard-stat-card">
+          <div className="stat-icon-wrapper">
+            <FaUtensils style={{ color: '#ffd93d', fontSize: '3.5rem' }} />
           </div>
-          <div className="admin-stat-info">
-            <div className="admin-stat-label">Total Orders</div>
-            <div className="admin-stat-value">{stats.totalOrders}</div>
+          <div className="stat-content">
+            <div className="stat-label">MENU ITEMS</div>
+            <div className="stat-number">{stats.totalMenuItems}</div>
           </div>
         </div>
       </div>
 
-      <h2 className="admin-section-title">Quick Actions</h2>
-      <div className="admin-actions-grid">
-        <Link to="/admin/users" className="admin-action-card">
-          <div className="admin-action-icon">
-            <FaUsers style={{ color: '#5b4fc7', fontSize: '3rem' }} />
+      <h2 className="dashboard-section-title">Quick Actions</h2>
+      <div className="dashboard-actions-list">
+        <Link to="/admin/users" className="dashboard-action-card">
+          <div className="action-icon-wrapper">
+            <FaUsers style={{ color: '#5b8fc7', fontSize: '3.5rem' }} />
           </div>
-          <h3 className="admin-action-title">Manage Customers</h3>
-          <p className="admin-action-description">
-            View and manage registered customers
-          </p>
+          <div className="action-content">
+            <h3 className="action-title">Manage Users</h3>
+            <p className="action-description">View and manage registered users</p>
+          </div>
         </Link>
 
-        <Link to="/admin/orders" className="admin-action-card">
-          <div className="admin-action-icon">
-            <FaCalendarAlt style={{ color: '#5b9aff', fontSize: '3rem' }} />
+        <Link to="/admin/orders" className="dashboard-action-card">
+          <div className="action-icon-wrapper">
+            <FaCalendarAlt style={{ color: '#ff6b6b', fontSize: '3.5rem' }} />
           </div>
-          <h3 className="admin-action-title">Manage Orders</h3>
-          <p className="admin-action-description">
-            View all orders and payment status
-          </p>
+          <div className="action-content">
+            <h3 className="action-title">Manage Bookings</h3>
+            <p className="action-description">View all bookings and payment status</p>
+          </div>
         </Link>
 
-        <Link to="/admin/menu" className="admin-action-card">
-          <div className="admin-action-icon">
-            <FaUtensils style={{ color: '#ffd700', fontSize: '3rem' }} />
+        <Link to="/admin/menu" className="dashboard-action-card">
+          <div className="action-icon-wrapper">
+            <FaUtensils style={{ color: '#ffd93d', fontSize: '3.5rem' }} />
           </div>
-          <h3 className="admin-action-title">Manage Menu</h3>
-          <p className="admin-action-description">
-            Add, edit and manage food items
-          </p>
+          <div className="action-content">
+            <h3 className="action-title">Manage Menu</h3>
+            <p className="action-description">Add, edit and manage food items</p>
+          </div>
         </Link>
       </div>
     </div>

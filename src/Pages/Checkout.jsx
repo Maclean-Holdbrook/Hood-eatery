@@ -387,61 +387,43 @@ const Checkout = () => {
               </div>
 
               {deliveryType === 'delivery' && (
-                <>
-                  <div className="form-group">
-                    <label>Street Address *</label>
-                    <textarea
-                      name="deliveryAddress"
-                      value={formData.deliveryAddress}
-                      onChange={handleChange}
-                      rows="3"
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Search for your address *</label>
-                    <div className="address-autocomplete-container">
-                      {loadError && (
-                        <div className="map-error">
-                          <p>Error loading Google Maps</p>
-                          <p className="help-text">Please check your Google Maps API key</p>
+                <div className="form-group">
+                  <label>Delivery Address *</label>
+                  <div className="address-autocomplete-container">
+                    {loadError && (
+                      <div className="map-error">
+                        <p>Error loading Google Maps</p>
+                        <p className="help-text">Please check your Google Maps API key</p>
+                      </div>
+                    )}
+                    {!isLoaded && !loadError && (
+                      <div className="map-loading">
+                        <p>Loading address search...</p>
+                      </div>
+                    )}
+                    {isLoaded && !loadError && (
+                      <Autocomplete
+                        onLoad={onAutocompleteLoad}
+                        onPlaceChanged={onPlaceChanged}
+                        options={{
+                          componentRestrictions: { country: 'gh' },
+                          fields: ['formatted_address', 'geometry', 'name'],
+                          types: ['address']
+                        }}
+                      >
+                        <div className="autocomplete-input-wrapper">
+                          <FaMapMarkerAlt className="location-icon" />
+                          <input
+                            type="text"
+                            placeholder="Enter your delivery address"
+                            className="autocomplete-input"
+                            defaultValue={formData.deliveryAddress}
+                          />
                         </div>
-                      )}
-                      {!isLoaded && !loadError && (
-                        <div className="map-loading">
-                          <p>Loading address search...</p>
-                        </div>
-                      )}
-                      {isLoaded && !loadError && (
-                        <Autocomplete
-                          onLoad={onAutocompleteLoad}
-                          onPlaceChanged={onPlaceChanged}
-                          options={{
-                            componentRestrictions: { country: 'gh' },
-                            fields: ['formatted_address', 'geometry', 'name'],
-                            types: ['address']
-                          }}
-                        >
-                          <div className="autocomplete-input-wrapper">
-                            <FaMapMarkerAlt className="location-icon" />
-                            <input
-                              type="text"
-                              placeholder="Enter your delivery address"
-                              className="autocomplete-input"
-                              defaultValue={formData.deliveryAddress}
-                            />
-                          </div>
-                        </Autocomplete>
-                      )}
-                    </div>
-                    <p className="help-text">
-                      {position && position.lat ?
-                        `Location selected: ${position.lat.toFixed(6)}, ${position.lng.toFixed(6)}` :
-                        'Start typing your address and select from suggestions'
-                      }
-                    </p>
+                      </Autocomplete>
+                    )}
                   </div>
-                </>
+                </div>
               )}
             </div>
           )}

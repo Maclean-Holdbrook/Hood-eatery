@@ -3,19 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { ordersAPI } from '../services/api';
-import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
+import { Autocomplete, useLoadScript } from '@react-google-maps/api';
 import PaystackPop from '@paystack/inline-js';
-import { FaArrowLeft, FaTrash, FaMinus, FaPlus, FaUser, FaCreditCard } from 'react-icons/fa';
-
-const mapContainerStyle = {
-  width: '100%',
-  height: '300px'
-};
+import { FaArrowLeft, FaTrash, FaMinus, FaPlus, FaUser, FaCreditCard, FaMapMarkerAlt } from 'react-icons/fa';
 
 const defaultCenter = {
   lat: 5.6037,  // Accra, Ghana
   lng: -0.1870
 };
+
+const libraries = ['places'];
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -23,9 +20,10 @@ const Checkout = () => {
   const { user } = useAuth();
   const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
 
-  // Load Google Maps
+  // Load Google Maps with Places library
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    libraries
   });
 
   const [loading, setLoading] = useState(false);
@@ -33,6 +31,7 @@ const Checkout = () => {
   const [deliveryType, setDeliveryType] = useState('delivery');
   const [showContactInfo, setShowContactInfo] = useState(false);
   const [selectedTip, setSelectedTip] = useState(0);
+  const [autocomplete, setAutocomplete] = useState(null);
 
   const [formData, setFormData] = useState({
     customerName: user?.fullName || '',
@@ -44,7 +43,6 @@ const Checkout = () => {
   });
 
   const [position, setPosition] = useState(null);
-  const [mapCenter, setMapCenter] = useState(defaultCenter);
 
   // Get user's current location
   useEffect(() => {
@@ -56,7 +54,6 @@ const Checkout = () => {
             lng: pos.coords.longitude
           };
           setPosition(userLocation);
-          setMapCenter(userLocation);
         },
         (err) => {
           console.error('Error getting location:', err);
@@ -67,6 +64,30 @@ const Checkout = () => {
       setPosition(defaultCenter);
     }
   }, []);
+
+  // Handle autocomplete load
+  const onAutocompleteLoad = (autocompleteInstance) => {
+    setAutocomplete(autocompleteInstance);
+  };
+
+  // Handle place selection
+  const onPlaceChanged = () => {
+    if (autocomplete !== null) {
+      const place = autocomplete.getPlace();
+
+      if (place.geometry) {
+        const location = {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng()
+        };
+        setPosition(location);
+        setFormData({
+          ...formData,
+          deliveryAddress: place.formatted_address || ''
+        });
+      }
+    }
+  };
 
   // Reset tip when switching to pickup mode
   useEffect(() => {
@@ -378,8 +399,8 @@ const Checkout = () => {
                     />
                   </div>
                   <div className="form-group">
-                    <label>Select Location on Map *</label>
-                    <div className="map-container">
+                    <label>Search for your address *</label>
+                    <div className="address-autocomplete-container">
                       {loadError && (
                         <div className="map-error">
                           <p>Error loading Google Maps</p>
@@ -388,50 +409,35 @@ const Checkout = () => {
                       )}
                       {!isLoaded && !loadError && (
                         <div className="map-loading">
-                          <p>Loading Maps...</p>
+                          <p>Loading address search...</p>
                         </div>
                       )}
                       {isLoaded && !loadError && (
-                        <GoogleMap
-                          mapContainerStyle={mapContainerStyle}
-                          zoom={15}
-                          center={mapCenter}
-                          onClick={(e) => {
-                            const newPosition = {
-                              lat: e.latLng.lat(),
-                              lng: e.latLng.lng()
-                            };
-                            setPosition(newPosition);
-                            setMapCenter(newPosition);
-                          }}
+                        <Autocomplete
+                          onLoad={onAutocompleteLoad}
+                          onPlaceChanged={onPlaceChanged}
                           options={{
-                            zoomControl: true,
-                            streetViewControl: false,
-                            mapTypeControl: false,
-                            fullscreenControl: false,
+                            componentRestrictions: { country: 'gh' },
+                            fields: ['formatted_address', 'geometry', 'name'],
+                            types: ['address']
                           }}
                         >
-                          {position && position.lat && position.lng && (
-                            <Marker
-                              position={position}
-                              draggable={true}
-                              onDragEnd={(e) => {
-                                const newPosition = {
-                                  lat: e.latLng.lat(),
-                                  lng: e.latLng.lng()
-                                };
-                                setPosition(newPosition);
-                                setMapCenter(newPosition);
-                              }}
+                          <div className="autocomplete-input-wrapper">
+                            <FaMapMarkerAlt className="location-icon" />
+                            <input
+                              type="text"
+                              placeholder="Enter your delivery address"
+                              className="autocomplete-input"
+                              defaultValue={formData.deliveryAddress}
                             />
-                          )}
-                        </GoogleMap>
+                          </div>
+                        </Autocomplete>
                       )}
                     </div>
                     <p className="help-text">
                       {position && position.lat ?
-                        `Selected location: ${position.lat.toFixed(6)}, ${position.lng.toFixed(6)}` :
-                        'Click on the map to set your delivery location or drag the marker'
+                        `Location selected: ${position.lat.toFixed(6)}, ${position.lng.toFixed(6)}` :
+                        'Start typing your address and select from suggestions'
                       }
                     </p>
                   </div>

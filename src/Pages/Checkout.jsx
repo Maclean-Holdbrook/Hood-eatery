@@ -412,7 +412,6 @@ const Checkout = () => {
                         }}
                       >
                         <div className="autocomplete-input-wrapper">
-                          <FaMapMarkerAlt className="location-icon" />
                           <input
                             type="text"
                             placeholder="Enter your delivery address"

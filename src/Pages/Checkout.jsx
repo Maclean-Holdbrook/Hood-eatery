@@ -408,17 +408,14 @@ const Checkout = () => {
                         onPlaceChanged={onPlaceChanged}
                         options={{
                           componentRestrictions: { country: 'gh' },
-                          fields: ['formatted_address', 'geometry', 'name'],
-                          types: ['address']
+                          fields: ['formatted_address', 'geometry', 'name']
                         }}
                       >
-                        <div className="autocomplete-input-wrapper">
-                          <input
-                            type="text"
-                            placeholder="Enter your delivery address"
-                            className="autocomplete-input"
-                          />
-                        </div>
+                        <input
+                          type="text"
+                          placeholder="Enter your delivery address"
+                          className="autocomplete-input"
+                        />
                       </Autocomplete>
                     )}
                   </div>

@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { useEffect } from 'react';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
+import { AlertProvider } from './context/AlertContext';
 
 // Layout Components
 import Header from './Components/Header';
@@ -9,6 +10,7 @@ import Footer from './Components/Footer';
 import FloatingBasket from './Components/FloatingBasket';
 import AdminLayout from './Components/AdminLayout';
 import PrivateRoute from './Components/PrivateRoute';
+import AlertModal from './Components/AlertModal';
 
 // Customer Pages
 import Home from './Pages/Home';
@@ -21,6 +23,7 @@ import TrackOrder from './Pages/TrackOrder';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
 import MyOrders from './Pages/MyOrders';
+import AlertDemo from './Pages/AlertDemo';
 
 // Admin Pages
 import AdminLogin from './Pages/admin/AdminLogin';
@@ -49,7 +52,9 @@ function AppContent() {
   return (
     <AuthProvider>
       <CartProvider>
-        <ScrollToTop />
+        <AlertProvider>
+          <AlertModal />
+          <ScrollToTop />
         {isAdminRoute ? (
           // Admin Layout
           <Routes>
@@ -106,14 +111,16 @@ function AppContent() {
             <main className="main-content">
               <Routes>
                 {/* Public Routes */}
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<Menu />} />
                 <Route path="/menu" element={<Menu />} />
+                <Route path="/home" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/track-order/:orderNumber" element={<TrackOrder />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/alert-demo" element={<AlertDemo />} />
 
                 {/* Protected Customer Routes */}
                 <Route
@@ -137,6 +144,7 @@ function AppContent() {
             <Footer />
           </div>
         )}
+        </AlertProvider>
       </CartProvider>
     </AuthProvider>
   );

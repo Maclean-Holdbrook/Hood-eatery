@@ -271,13 +271,13 @@ const Checkout = () => {
                       <FaPlus />
                     </button>
                   </div>
+                  <div className="cart-item-price-inline">
+                    {item.original_price && parseFloat(item.original_price) > parseFloat(item.price) && (
+                      <span className="original-price-inline">GHC{(item.original_price * item.quantity).toFixed(0)}</span>
+                    )}
+                    <span className="current-price-inline">GHC{(item.price * item.quantity).toFixed(0)}</span>
+                  </div>
                 </div>
-              </div>
-              <div className="cart-item-price">
-                {item.original_price && (
-                  <span className="original-price">GHC{(item.original_price * item.quantity).toFixed(2)}</span>
-                )}
-                <span className="current-price">GHC{(item.price * item.quantity).toFixed(2)}</span>
               </div>
             </div>
           ))}

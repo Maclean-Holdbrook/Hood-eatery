@@ -1,14 +1,21 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import CartItem from '../Components/CartItem';
 import { FaShoppingBasket } from 'react-icons/fa';
 
 const Cart = () => {
   const { cart, getCartTotal, getCartCount, clearCart } = useCart();
+  const { user } = useAuth();
 
   const deliveryFee = 5.00;
   const subtotal = getCartTotal();
   const total = subtotal + deliveryFee;
+
+  // Redirect to login if user is not authenticated
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
 
   if (cart.length === 0) {
     return (

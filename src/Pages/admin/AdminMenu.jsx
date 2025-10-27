@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { menuAPI } from '../../services/api';
 import Loading from '../../Components/Loading';
 import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+import { useAlert } from '../../context/AlertContext';
 
 const AdminMenu = () => {
+  const alert = useAlert();
   const [categories, setCategories] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -86,8 +88,10 @@ const AdminMenu = () => {
     try {
       if (editingItem) {
         await menuAPI.updateMenuItem(editingItem.id, data);
+        alert.success('Menu item updated successfully!');
       } else {
         await menuAPI.createMenuItem(data);
+        alert.success('Menu item added successfully!');
       }
 
       setShowModal(false);
@@ -96,7 +100,7 @@ const AdminMenu = () => {
       loadMenu();
     } catch (err) {
       console.error('Error saving menu item:', err);
-      alert('Failed to save menu item');
+      alert.error(err.response?.data?.message || 'Failed to save menu item. Please try again.');
     }
   };
 
@@ -116,16 +120,26 @@ const AdminMenu = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this item?')) {
+    const confirmed = await alert.confirm(
+      'Are you sure you want to delete this menu item? This action cannot be undone.',
+      'Delete Menu Item',
+      {
+        confirmLabel: 'Delete',
+        cancelLabel: 'Cancel'
+      }
+    );
+
+    if (!confirmed) {
       return;
     }
 
     try {
       await menuAPI.deleteMenuItem(id);
+      alert.success('Menu item deleted successfully!');
       loadMenu();
     } catch (err) {
       console.error('Error deleting menu item:', err);
-      alert('Failed to delete menu item');
+      alert.error(err.response?.data?.message || 'Failed to delete menu item. Please try again.');
     }
   };
 

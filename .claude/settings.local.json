@@ -55,7 +55,12 @@
       "Bash(rm:*)",
       "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: Hood Eatery food ordering platform\n\n- Full-stack food ordering application with React frontend\n- Express backend with Neon PostgreSQL database\n- User authentication and authorization system\n- Admin dashboard for menu and order management\n- Real-time order tracking with Socket.IO\n- Complete menu management system\n- Cart and checkout functionality\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(git push:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Read(//c/Users/ebene/Documents/**)",
+      "WebFetch(domain:hood-eatery-backend.vercel.app)",
+      "Bash(copy:*)",
+      "Bash(git restore:*)",
+      "Read(//c/Users/ebene/Desktop/seconc semester slides/info studies/**)"
     ],
     "deny": [],
     "ask": []

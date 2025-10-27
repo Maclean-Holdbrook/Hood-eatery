@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaUser, FaSignOutAlt, FaInfoCircle, FaBars, FaTimes, FaShoppingCart } from 'react-icons/fa';
+import { FaUser, FaSignOutAlt, FaInfoCircle, FaBars, FaTimes, FaShoppingBasket, FaPhone } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 
 const Header = () => {
   const { user, logout } = useAuth();
-  const { getCartCount } = useCart();
+  const { cart, getCartCount } = useCart();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -40,7 +40,7 @@ const Header = () => {
 
             <div className="header-actions">
               <Link to="/cart" className="cart-icon" title="Basket">
-                <FaShoppingCart />
+                <FaShoppingBasket />
                 {getCartCount() > 0 && (
                   <span className="cart-badge">{getCartCount()}</span>
                 )}
@@ -65,10 +65,33 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Mobile Hamburger Menu Button */}
-      <button className="hamburger-btn mobile-only" onClick={toggleSidebar}>
-        <FaBars />
-      </button>
+      {/* Mobile Header */}
+      <header className="mobile-header mobile-only">
+        <div className="mobile-header-content">
+          <Link to="/" className="mobile-logo">
+            <div className="logo-icon">🍔</div>
+            <div className="logo-text">
+              <h2>Hood Eatery</h2>
+              <p>food delivery</p>
+            </div>
+          </Link>
+
+          <div className="mobile-header-actions">
+            <Link to="tel:+233123456789" className="phone-btn">
+              <FaPhone />
+            </Link>
+            {user && getCartCount() > 0 && (
+              <Link to="/cart" className="cart-btn-mobile">
+                <div className="cart-badge-mobile">GHC{(cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)).toFixed(2)}</div>
+                <FaShoppingBasket />
+              </Link>
+            )}
+            <button className="hamburger-btn" onClick={toggleSidebar}>
+              <FaBars />
+            </button>
+          </div>
+        </div>
+      </header>
 
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && <div className="sidebar-overlay mobile-only" onClick={toggleSidebar}></div>}
@@ -90,10 +113,23 @@ const Header = () => {
         </div>
 
         <nav className="sidebar-nav">
-          <Link to={user ? "/my-orders" : "/login"} className="sidebar-link" onClick={toggleSidebar}>
-            <FaUser className="sidebar-icon" />
-            <span>{user ? user.fullName : 'Sign In'}</span>
-          </Link>
+          {user ? (
+            <Link to="/my-orders" className="sidebar-link" onClick={toggleSidebar}>
+              <FaUser className="sidebar-icon" />
+              <span>Orders</span>
+            </Link>
+          ) : (
+            <>
+              <Link to="/login" className="sidebar-link" onClick={toggleSidebar}>
+                <FaUser className="sidebar-icon" />
+                <span>Sign In</span>
+              </Link>
+              <Link to="/register" className="sidebar-link" onClick={toggleSidebar}>
+                <FaUser className="sidebar-icon" />
+                <span>Sign Up</span>
+              </Link>
+            </>
+          )}
 
           <Link to="/about" className="sidebar-link" onClick={toggleSidebar}>
             <FaInfoCircle className="sidebar-icon" />
@@ -105,10 +141,12 @@ const Header = () => {
             <span>Contact</span>
           </Link>
 
-          <Link to="/cart" className="sidebar-link" onClick={toggleSidebar}>
-            <FaShoppingCart className="sidebar-icon" />
-            <span>Basket ({getCartCount()})</span>
-          </Link>
+          {user && getCartCount() > 0 && (
+            <Link to="/cart" className="sidebar-link" onClick={toggleSidebar}>
+              <FaShoppingBasket className="sidebar-icon" />
+              <span>Basket ({getCartCount()})</span>
+            </Link>
+          )}
         </nav>
 
         {user && (

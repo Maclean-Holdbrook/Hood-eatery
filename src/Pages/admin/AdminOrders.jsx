@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { ordersAPI } from '../../services/api';
 import socketService from '../../services/socket';
 import Loading from '../../Components/Loading';
+import { useAlert } from '../../context/AlertContext';
 
 const AdminOrders = () => {
+  const alert = useAlert();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState('');
@@ -74,10 +76,10 @@ const AdminOrders = () => {
       );
       setSelectedOrder({ ...selectedOrder, status: statusUpdate });
       setStatusNote('');
-      alert('Order status updated successfully!');
+      alert.success('Order status updated successfully!', 'Status Updated');
     } catch (err) {
       console.error('Error updating order status:', err);
-      alert('Failed to update order status');
+      alert.error(err.response?.data?.message || 'Failed to update order status. Please try again.', 'Update Failed');
     }
   };
 

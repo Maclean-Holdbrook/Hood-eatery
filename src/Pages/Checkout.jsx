@@ -271,12 +271,12 @@ const Checkout = () => {
                       <FaPlus />
                     </button>
                   </div>
-                  <div className="cart-item-price-inline">
-                    {item.original_price && parseFloat(item.original_price) > parseFloat(item.price) && (
-                      <span className="original-price-inline">GHC{(item.original_price * item.quantity).toFixed(0)}</span>
-                    )}
-                    <span className="current-price-inline">GHC{(item.price * item.quantity).toFixed(0)}</span>
-                  </div>
+                </div>
+                <div className="cart-item-price-below">
+                  {item.original_price && parseFloat(item.original_price) > parseFloat(item.price) && (
+                    <span className="original-price-below">GHC{(item.original_price * item.quantity).toFixed(0)}</span>
+                  )}
+                  <span className="current-price-below">GHC{(item.price * item.quantity).toFixed(0)}</span>
                 </div>
               </div>
             </div>
@@ -380,12 +380,21 @@ const Checkout = () => {
                   <div className="form-group">
                     <label>Select Location on Map *</label>
                     <div className="map-container">
-                      {loadError && <div>Error loading maps</div>}
-                      {!isLoaded && <div>Loading Maps...</div>}
-                      {isLoaded && (
+                      {loadError && (
+                        <div className="map-error">
+                          <p>Error loading Google Maps</p>
+                          <p className="help-text">Please check your Google Maps API key</p>
+                        </div>
+                      )}
+                      {!isLoaded && !loadError && (
+                        <div className="map-loading">
+                          <p>Loading Maps...</p>
+                        </div>
+                      )}
+                      {isLoaded && !loadError && (
                         <GoogleMap
                           mapContainerStyle={mapContainerStyle}
-                          zoom={13}
+                          zoom={15}
                           center={mapCenter}
                           onClick={(e) => {
                             const newPosition = {
@@ -393,13 +402,38 @@ const Checkout = () => {
                               lng: e.latLng.lng()
                             };
                             setPosition(newPosition);
+                            setMapCenter(newPosition);
+                          }}
+                          options={{
+                            zoomControl: true,
+                            streetViewControl: false,
+                            mapTypeControl: false,
+                            fullscreenControl: false,
                           }}
                         >
-                          {position && <Marker position={position} />}
+                          {position && position.lat && position.lng && (
+                            <Marker
+                              position={position}
+                              draggable={true}
+                              onDragEnd={(e) => {
+                                const newPosition = {
+                                  lat: e.latLng.lat(),
+                                  lng: e.latLng.lng()
+                                };
+                                setPosition(newPosition);
+                                setMapCenter(newPosition);
+                              }}
+                            />
+                          )}
                         </GoogleMap>
                       )}
                     </div>
-                    <p className="help-text">Click on the map to set your delivery location</p>
+                    <p className="help-text">
+                      {position && position.lat ?
+                        `Selected location: ${position.lat.toFixed(6)}, ${position.lng.toFixed(6)}` :
+                        'Click on the map to set your delivery location or drag the marker'
+                      }
+                    </p>
                   </div>
                 </>
               )}

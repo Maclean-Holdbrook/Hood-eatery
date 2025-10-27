@@ -24,6 +24,7 @@ import Login from './Pages/Login';
 import Register from './Pages/Register';
 import MyOrders from './Pages/MyOrders';
 import AlertDemo from './Pages/AlertDemo';
+import Profile from './Pages/Profile';
 
 // Admin Pages
 import AdminLogin from './Pages/admin/AdminLogin';
@@ -136,6 +137,14 @@ function AppContent() {
                   element={
                     <PrivateRoute>
                       <MyOrders />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <PrivateRoute>
+                      <Profile />
                     </PrivateRoute>
                   }
                 />

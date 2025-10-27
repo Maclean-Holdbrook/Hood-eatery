@@ -2807,6 +2807,37 @@ body {
     color: var(--dark-color);
   }
 
+  .sidebar-profile {
+    padding: 3rem 2rem 2rem;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .profile-avatar {
+    font-size: 4rem;
+    color: #999;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .profile-info h3 {
+    font-size: 1.3rem;
+    color: var(--dark-color);
+    margin: 0 0 0.25rem 0;
+    font-weight: 600;
+  }
+
+  .profile-info p {
+    font-size: 0.95rem;
+    color: #666;
+    margin: 0;
+  }
+
   .sidebar-header {
     padding: 0 2rem 2rem;
     border-bottom: 1px solid #e0e0e0;
@@ -2850,6 +2881,11 @@ body {
     text-decoration: none;
     transition: var(--transition);
     font-size: 1.1rem;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
   }
 
   .sidebar-link:hover {
@@ -2859,6 +2895,11 @@ body {
   .sidebar-icon {
     font-size: 1.2rem;
     color: #c41e3a;
+  }
+
+  .logout-link {
+    color: #c41e3a;
+    font-weight: 600;
   }
 
   .sidebar-footer {
@@ -3813,6 +3854,30 @@ body {
   border-radius: 20px;
 }
 
+/* Price Below Food Item */
+.cart-item-price-below {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.original-price-below {
+  color: #999;
+  text-decoration: line-through;
+  font-size: 1rem;
+}
+
+.current-price-below {
+  color: #2d7a6e;
+  font-weight: 700;
+  font-size: 1.2rem;
+  background-color: #2d7a6e;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+}
+
 /* Mobile/Desktop Utilities */
 @media (min-width: 769px) {
   .mobile-only {
@@ -4051,5 +4116,229 @@ body {
   .alert-action-btn {
     width: 100%;
     min-width: unset;
+  }
+}
+
+/* Profile Page Styles */
+.profile-page {
+  padding: 2rem 0;
+  min-height: calc(100vh - 200px);
+}
+
+.profile-container {
+  max-width: 700px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.profile-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.profile-avatar-large {
+  width: 100px;
+  height: 100px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  margin: 0 auto 1rem;
+  color: white;
+}
+
+.profile-header h1 {
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+  font-weight: 700;
+}
+
+.profile-email {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.profile-form {
+  padding: 2rem;
+}
+
+.form-section {
+  margin-bottom: 2rem;
+}
+
+.form-section h2 {
+  font-size: 1.5rem;
+  color: var(--dark-color);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--dark-color);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.form-group label svg {
+  color: var(--primary-color);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: var(--transition);
+  background-color: white;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.form-group input:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 2px solid #f0f0f0;
+}
+
+.profile-actions .btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 1rem 0;
+  }
+
+  .profile-container {
+    margin: 0 1rem;
+  }
+
+  .profile-header {
+    padding: 2rem 1rem;
+  }
+
+  .profile-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .profile-form {
+    padding: 1.5rem;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+  }
+
+  .profile-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Extras and Portions Manager Styles */
+.extras-manager,
+.portions-manager {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #f9f9f9;
+}
+
+.extras-input-row,
+.portions-input-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.extras-input-row input,
+.portions-input-row input {
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.extras-list,
+.portions-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  min-height: 40px;
+}
+
+.extra-tag,
+.portion-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #e3f2fd;
+  color: #1976d2;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.remove-tag-btn {
+  background: none;
+  border: none;
+  color: #d32f2f;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.remove-tag-btn:hover {
+  background-color: rgba(211, 47, 47, 0.1);
+}
+
+@media (max-width: 768px) {
+  .extras-input-row,
+  .portions-input-row {
+    flex-direction: column;
+  }
+
+  .extras-input-row input,
+  .portions-input-row input {
+    width: 100%;
   }
 }

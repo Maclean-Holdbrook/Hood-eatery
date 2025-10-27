@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { menuAPI } from '../../services/api';
 import Loading from '../../Components/Loading';
-import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaTimes } from 'react-icons/fa';
 import { useAlert } from '../../context/AlertContext';
 
 const AdminMenu = () => {
@@ -20,8 +20,13 @@ const AdminMenu = () => {
     originalPrice: '',
     isAvailable: true,
     isFeatured: false,
-    image: null
+    image: null,
+    extras: [],
+    portions: []
   });
+
+  const [newExtra, setNewExtra] = useState({ name: '', price: '', originalPrice: '' });
+  const [newPortion, setNewPortion] = useState({ name: '', price: '', originalPrice: '' });
 
   const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
 
@@ -80,8 +85,11 @@ const AdminMenu = () => {
     }
     data.append('isAvailable', formData.isAvailable);
     data.append('isFeatured', formData.isFeatured);
-    
-  
+
+    // Add extras and portions as JSON strings
+    data.append('extras', JSON.stringify(formData.extras));
+    data.append('portions', JSON.stringify(formData.portions));
+
     if (formData.image) {
       data.append('image', formData.image);
     }
@@ -114,7 +122,9 @@ const AdminMenu = () => {
       originalPrice: item.original_price || '',
       isAvailable: item.is_available,
       isFeatured: item.is_featured,
-      image: null
+      image: null,
+      extras: item.extras || [],
+      portions: item.portions || []
     });
     setShowModal(true);
   };
@@ -152,7 +162,51 @@ const AdminMenu = () => {
       originalPrice: '',
       isAvailable: true,
       isFeatured: false,
-      image: null
+      image: null,
+      extras: [],
+      portions: []
+    });
+    setNewExtra({ name: '', price: '', originalPrice: '' });
+    setNewPortion({ name: '', price: '', originalPrice: '' });
+  };
+
+  const addExtra = () => {
+    if (newExtra.name && newExtra.price) {
+      const extra = {
+        id: Date.now(),
+        name: newExtra.name,
+        price: parseFloat(newExtra.price),
+        originalPrice: newExtra.originalPrice ? parseFloat(newExtra.originalPrice) : null
+      };
+      setFormData({ ...formData, extras: [...formData.extras, extra] });
+      setNewExtra({ name: '', price: '', originalPrice: '' });
+    }
+  };
+
+  const removeExtra = (id) => {
+    setFormData({
+      ...formData,
+      extras: formData.extras.filter(extra => extra.id !== id)
+    });
+  };
+
+  const addPortion = () => {
+    if (newPortion.name && newPortion.price !== '') {
+      const portion = {
+        id: newPortion.name.toLowerCase().replace(/\s+/g, '_'),
+        name: newPortion.name,
+        price: parseFloat(newPortion.price),
+        originalPrice: newPortion.originalPrice ? parseFloat(newPortion.originalPrice) : null
+      };
+      setFormData({ ...formData, portions: [...formData.portions, portion] });
+      setNewPortion({ name: '', price: '', originalPrice: '' });
+    }
+  };
+
+  const removePortion = (id) => {
+    setFormData({
+      ...formData,
+      portions: formData.portions.filter(portion => portion.id !== id)
     });
   };
 
@@ -315,6 +369,98 @@ const AdminMenu = () => {
                     />
                     Featured item
                   </label>
+                </div>
+
+                {/* Extras Section */}
+                <div className="form-group">
+                  <label>Extras/Add-ons</label>
+                  <div className="extras-manager">
+                    <div className="extras-input-row">
+                      <input
+                        type="text"
+                        placeholder="Extra name (e.g., egg, chicken)"
+                        value={newExtra.name}
+                        onChange={(e) => setNewExtra({ ...newExtra, name: e.target.value })}
+                        style={{ flex: 2 }}
+                      />
+                      <input
+                        type="number"
+                        step="0.01"
+                        placeholder="Price"
+                        value={newExtra.price}
+                        onChange={(e) => setNewExtra({ ...newExtra, price: e.target.value })}
+                        style={{ flex: 1 }}
+                      />
+                      <input
+                        type="number"
+                        step="0.01"
+                        placeholder="Original (optional)"
+                        value={newExtra.originalPrice}
+                        onChange={(e) => setNewExtra({ ...newExtra, originalPrice: e.target.value })}
+                        style={{ flex: 1 }}
+                      />
+                      <button type="button" onClick={addExtra} className="btn btn-sm btn-primary">
+                        Add
+                      </button>
+                    </div>
+                    <div className="extras-list">
+                      {formData.extras.map((extra) => (
+                        <div key={extra.id} className="extra-tag">
+                          <span>{extra.name} - GHC{extra.price.toFixed(2)}</span>
+                          <button type="button" onClick={() => removeExtra(extra.id)} className="remove-tag-btn">
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="help-text">Add extra items customers can add to their order</p>
+                </div>
+
+                {/* Portions Section */}
+                <div className="form-group">
+                  <label>Portion Sizes</label>
+                  <div className="portions-manager">
+                    <div className="portions-input-row">
+                      <input
+                        type="text"
+                        placeholder="Portion name (e.g., Individual, Family)"
+                        value={newPortion.name}
+                        onChange={(e) => setNewPortion({ ...newPortion, name: e.target.value })}
+                        style={{ flex: 2 }}
+                      />
+                      <input
+                        type="number"
+                        step="0.01"
+                        placeholder="Additional price (0 for base)"
+                        value={newPortion.price}
+                        onChange={(e) => setNewPortion({ ...newPortion, price: e.target.value })}
+                        style={{ flex: 1 }}
+                      />
+                      <input
+                        type="number"
+                        step="0.01"
+                        placeholder="Original (optional)"
+                        value={newPortion.originalPrice}
+                        onChange={(e) => setNewPortion({ ...newPortion, originalPrice: e.target.value })}
+                        style={{ flex: 1 }}
+                      />
+                      <button type="button" onClick={addPortion} className="btn btn-sm btn-primary">
+                        Add
+                      </button>
+                    </div>
+                    <div className="portions-list">
+                      {formData.portions.map((portion) => (
+                        <div key={portion.id} className="portion-tag">
+                          <span>{portion.name} - +GHC{portion.price.toFixed(2)}</span>
+                          <button type="button" onClick={() => removePortion(portion.id)} className="remove-tag-btn">
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="help-text">Add different portion sizes (e.g., Individual, Family)</p>
                 </div>
 
                 <div className="modal-actions">

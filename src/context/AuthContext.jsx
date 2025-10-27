@@ -103,7 +103,8 @@ export const AuthProvider = ({ children }) => {
     register,
     googleLogin,
     logout,
-    isAdmin
+    isAdmin,
+    loadUser
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

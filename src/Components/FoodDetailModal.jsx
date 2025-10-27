@@ -11,19 +11,10 @@ const FoodDetailModal = ({ item, isOpen, onClose }) => {
   const [selectedPortion, setSelectedPortion] = useState(null);
   const [note, setNote] = useState('');
 
-  // Mock extras data - in production, this would come from the backend
-  const mockExtras = [
-    { id: 1, name: 'egg', price: 2.50, originalPrice: 5.00 },
-    { id: 2, name: 'shito', price: 5.00, originalPrice: 10.00 },
-    { id: 3, name: 'chicken', price: 7.50, originalPrice: 15.00 },
-    { id: 4, name: 'fish', price: 6.00, originalPrice: 12.00 },
-    { id: 5, name: 'coleslaw', price: 5.00, originalPrice: 10.00 },
-  ];
-
-  const portions = [
-    { id: 'individual', name: 'Individual', price: 0 },
-    { id: 'family', name: 'Family', price: 25.00, originalPrice: 50.00 },
-  ];
+  // Get extras and portions from item data (admin-managed from backend)
+  // If not available, show empty arrays
+  const extras = item?.extras || [];
+  const portions = item?.portions || [];
 
   useEffect(() => {
     if (isOpen) {
@@ -120,56 +111,60 @@ const FoodDetailModal = ({ item, isOpen, onClose }) => {
             <p className="food-detail-description">{item.description}</p>
           )}
 
-          {/* Portion Selection */}
-          <div className="portion-section">
-            <h3>Portion Size</h3>
-            <div className="portion-options">
-              {portions.map((portion) => (
-                <label key={portion.id} className="portion-option">
-                  <input
-                    type="radio"
-                    name="portion"
-                    checked={selectedPortion?.id === portion.id}
-                    onChange={() => setSelectedPortion(portion)}
-                  />
-                  <div className="portion-details">
-                    <span className="portion-name">{portion.name}</span>
-                    {portion.price > 0 && (
-                      <div className="portion-price">
-                        {portion.originalPrice && (
-                          <span className="portion-original-price">+GHC{portion.originalPrice.toFixed(0)}</span>
-                        )}
-                        <span className="portion-current-price">+GHC{portion.price.toFixed(2)}</span>
-                      </div>
-                    )}
-                  </div>
-                </label>
-              ))}
+          {/* Portion Selection - Only show if portions are available */}
+          {portions && portions.length > 0 && (
+            <div className="portion-section">
+              <h3>Portion Size</h3>
+              <div className="portion-options">
+                {portions.map((portion) => (
+                  <label key={portion.id} className="portion-option">
+                    <input
+                      type="radio"
+                      name="portion"
+                      checked={selectedPortion?.id === portion.id}
+                      onChange={() => setSelectedPortion(portion)}
+                    />
+                    <div className="portion-details">
+                      <span className="portion-name">{portion.name}</span>
+                      {portion.price > 0 && (
+                        <div className="portion-price">
+                          {portion.originalPrice && (
+                            <span className="portion-original-price">+GHC{portion.originalPrice.toFixed(0)}</span>
+                          )}
+                          <span className="portion-current-price">+GHC{portion.price.toFixed(2)}</span>
+                        </div>
+                      )}
+                    </div>
+                  </label>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* Extras Section */}
-          <div className="extras-section">
-            <h3>Extras</h3>
-            <div className="extras-list">
-              {mockExtras.map((extra) => (
-                <label key={extra.id} className="extra-item">
-                  <input
-                    type="checkbox"
-                    checked={selectedExtras.some(e => e.id === extra.id)}
-                    onChange={() => toggleExtra(extra)}
-                  />
-                  <span className="extra-name">{extra.name}</span>
-                  <div className="extra-prices">
-                    {extra.originalPrice && (
-                      <span className="extra-original-price">+GHC{extra.originalPrice.toFixed(0)}</span>
-                    )}
-                    <span className="extra-current-price">+GHC{extra.price.toFixed(2)}</span>
-                  </div>
-                </label>
-              ))}
+          {/* Extras Section - Only show if extras are available */}
+          {extras && extras.length > 0 && (
+            <div className="extras-section">
+              <h3>Extras</h3>
+              <div className="extras-list">
+                {extras.map((extra) => (
+                  <label key={extra.id} className="extra-item">
+                    <input
+                      type="checkbox"
+                      checked={selectedExtras.some(e => e.id === extra.id)}
+                      onChange={() => toggleExtra(extra)}
+                    />
+                    <span className="extra-name">{extra.name}</span>
+                    <div className="extra-prices">
+                      {extra.originalPrice && (
+                        <span className="extra-original-price">+GHC{extra.originalPrice.toFixed(0)}</span>
+                      )}
+                      <span className="extra-current-price">+GHC{extra.price.toFixed(2)}</span>
+                    </div>
+                  </label>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Note Section */}
           <div className="note-section">

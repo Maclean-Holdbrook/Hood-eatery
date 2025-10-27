@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaUser, FaSignOutAlt, FaInfoCircle, FaBars, FaTimes, FaShoppingBasket, FaPhone } from 'react-icons/fa';
+import { FaUser, FaSignOutAlt, FaInfoCircle, FaBars, FaTimes, FaShoppingBasket, FaUserCircle, FaListAlt, FaUserCog } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 
@@ -76,20 +76,9 @@ const Header = () => {
             </div>
           </Link>
 
-          <div className="mobile-header-actions">
-            <Link to="tel:+233123456789" className="phone-btn">
-              <FaPhone />
-            </Link>
-            {user && getCartCount() > 0 && (
-              <Link to="/cart" className="cart-btn-mobile">
-                <div className="cart-badge-mobile">GHC{(cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)).toFixed(2)}</div>
-                <FaShoppingBasket />
-              </Link>
-            )}
-            <button className="hamburger-btn" onClick={toggleSidebar}>
-              <FaBars />
-            </button>
-          </div>
+          <button className="hamburger-btn" onClick={toggleSidebar}>
+            <FaBars />
+          </button>
         </div>
       </header>
 
@@ -102,59 +91,72 @@ const Header = () => {
           <FaTimes />
         </button>
 
-        <div className="sidebar-header">
-          <div className="sidebar-logo">
-            <div className="logo-icon">🍔</div>
-            <div className="logo-text">
-              <h2>Hood Eatery</h2>
-              <p>food delivery</p>
+        {user ? (
+          <>
+            {/* User Profile Section */}
+            <div className="sidebar-profile">
+              <div className="profile-avatar">
+                <FaUserCircle />
+              </div>
+              <div className="profile-info">
+                <h3>{user.fullName || user.name}</h3>
+                <p>{user.phone || user.email}</p>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <nav className="sidebar-nav">
-          {user ? (
-            <Link to="/my-orders" className="sidebar-link" onClick={toggleSidebar}>
-              <FaUser className="sidebar-icon" />
-              <span>Orders</span>
-            </Link>
-          ) : (
-            <>
+            {/* Logged In Menu */}
+            <nav className="sidebar-nav">
+              <Link to="/my-orders" className="sidebar-link" onClick={toggleSidebar}>
+                <FaListAlt className="sidebar-icon" />
+                <span>Orders</span>
+              </Link>
+
+              <Link to="/profile" className="sidebar-link" onClick={toggleSidebar}>
+                <FaUserCog className="sidebar-icon" />
+                <span>Account</span>
+              </Link>
+
+              <Link to="/about" className="sidebar-link" onClick={toggleSidebar}>
+                <FaInfoCircle className="sidebar-icon" />
+                <span>About Us</span>
+              </Link>
+
+              <button onClick={() => { logout(); toggleSidebar(); }} className="sidebar-link logout-link">
+                <FaSignOutAlt className="sidebar-icon" />
+                <span>Logout</span>
+              </button>
+            </nav>
+          </>
+        ) : (
+          <>
+            {/* Logged Out Menu */}
+            <div className="sidebar-header">
+              <div className="sidebar-logo">
+                <div className="logo-icon">🍔</div>
+                <div className="logo-text">
+                  <h2>Hood Eatery</h2>
+                  <p>food delivery</p>
+                </div>
+              </div>
+            </div>
+
+            <nav className="sidebar-nav">
               <Link to="/login" className="sidebar-link" onClick={toggleSidebar}>
                 <FaUser className="sidebar-icon" />
                 <span>Sign In</span>
               </Link>
+
               <Link to="/register" className="sidebar-link" onClick={toggleSidebar}>
                 <FaUser className="sidebar-icon" />
                 <span>Sign Up</span>
               </Link>
-            </>
-          )}
 
-          <Link to="/about" className="sidebar-link" onClick={toggleSidebar}>
-            <FaInfoCircle className="sidebar-icon" />
-            <span>About Us</span>
-          </Link>
-
-          <Link to="/contact" className="sidebar-link" onClick={toggleSidebar}>
-            <FaInfoCircle className="sidebar-icon" />
-            <span>Contact</span>
-          </Link>
-
-          {user && getCartCount() > 0 && (
-            <Link to="/cart" className="sidebar-link" onClick={toggleSidebar}>
-              <FaShoppingBasket className="sidebar-icon" />
-              <span>Basket ({getCartCount()})</span>
-            </Link>
-          )}
-        </nav>
-
-        {user && (
-          <div className="sidebar-footer">
-            <button onClick={() => { logout(); toggleSidebar(); }} className="logout-btn">
-              Logout
-            </button>
-          </div>
+              <Link to="/about" className="sidebar-link" onClick={toggleSidebar}>
+                <FaInfoCircle className="sidebar-icon" />
+                <span>About Us</span>
+              </Link>
+            </nav>
+          </>
         )}
       </aside>
     </>

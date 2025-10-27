@@ -60,7 +60,8 @@
       "WebFetch(domain:hood-eatery-backend.vercel.app)",
       "Bash(copy:*)",
       "Bash(git restore:*)",
-      "Read(//c/Users/ebene/Desktop/seconc semester slides/info studies/**)"
+      "Read(//c/Users/ebene/Desktop/seconc semester slides/info studies/**)",
+      "Bash(node scripts/addExtrasPortions.js:*)"
     ],
     "deny": [],
     "ask": []

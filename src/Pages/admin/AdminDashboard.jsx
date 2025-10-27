@@ -70,7 +70,7 @@ const AdminDashboard = () => {
             <FaUsers style={{ color: '#5b8fc7', fontSize: '3.5rem' }} />
           </div>
           <div className="stat-content">
-            <div className="stat-label">TOTAL USERS</div>
+            <div className="stat-label">TOTAL CUSTOMERS</div>
             <div className="stat-number">{stats.totalCustomers}</div>
           </div>
         </div>
@@ -103,8 +103,8 @@ const AdminDashboard = () => {
             <FaUsers style={{ color: '#5b8fc7', fontSize: '3.5rem' }} />
           </div>
           <div className="action-content">
-            <h3 className="action-title">Manage Users</h3>
-            <p className="action-description">View and manage registered users</p>
+            <h3 className="action-title">Manage Customers</h3>
+            <p className="action-description">View and manage registered customers</p>
           </div>
         </Link>
 
@@ -113,8 +113,8 @@ const AdminDashboard = () => {
             <FaCalendarAlt style={{ color: '#ff6b6b', fontSize: '3.5rem' }} />
           </div>
           <div className="action-content">
-            <h3 className="action-title">Manage Bookings</h3>
-            <p className="action-description">View all bookings and payment status</p>
+            <h3 className="action-title">Manage Orders</h3>
+            <p className="action-description">View all orders and payment status</p>
           </div>
         </Link>
 

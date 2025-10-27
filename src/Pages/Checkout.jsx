@@ -1,24 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { ordersAPI } from '../services/api';
 import { Autocomplete, useLoadScript } from '@react-google-maps/api';
 import PaystackPop from '@paystack/inline-js';
-import { FaArrowLeft, FaTrash, FaMinus, FaPlus, FaUser, FaCreditCard, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaArrowLeft, FaTrash, FaMinus, FaPlus, FaUser, FaCreditCard } from 'react-icons/fa';
 
 const defaultCenter = {
   lat: 5.6037,  // Accra, Ghana
   lng: -0.1870
 };
 
-const libraries = ['places'];
-
 const Checkout = () => {
   const navigate = useNavigate();
   const { cart, getCartTotal, clearCart, updateQuantity, removeFromCart } = useCart();
   const { user } = useAuth();
   const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+
+  // Memoize libraries to prevent re-renders
+  const libraries = useMemo(() => ['places'], []);
+  const autocompleteRef = useRef(null);
 
   // Load Google Maps with Places library
   const { isLoaded, loadError } = useLoadScript({
@@ -31,7 +33,6 @@ const Checkout = () => {
   const [deliveryType, setDeliveryType] = useState('delivery');
   const [showContactInfo, setShowContactInfo] = useState(false);
   const [selectedTip, setSelectedTip] = useState(0);
-  const [autocomplete, setAutocomplete] = useState(null);
 
   const [formData, setFormData] = useState({
     customerName: user?.fullName || '',
@@ -67,13 +68,13 @@ const Checkout = () => {
 
   // Handle autocomplete load
   const onAutocompleteLoad = (autocompleteInstance) => {
-    setAutocomplete(autocompleteInstance);
+    autocompleteRef.current = autocompleteInstance;
   };
 
   // Handle place selection
   const onPlaceChanged = () => {
-    if (autocomplete !== null) {
-      const place = autocomplete.getPlace();
+    if (autocompleteRef.current !== null) {
+      const place = autocompleteRef.current.getPlace();
 
       if (place.geometry) {
         const location = {
@@ -81,10 +82,10 @@ const Checkout = () => {
           lng: place.geometry.location.lng()
         };
         setPosition(location);
-        setFormData({
-          ...formData,
+        setFormData(prev => ({
+          ...prev,
           deliveryAddress: place.formatted_address || ''
-        });
+        }));
       }
     }
   };

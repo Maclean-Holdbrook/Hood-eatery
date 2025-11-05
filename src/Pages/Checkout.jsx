@@ -13,9 +13,9 @@ const Checkout = () => {
   const { user } = useAuth();
   const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
 
-  // Memoize libraries to prevent re-renders
-  const libraries = useMemo(() => ['places'], []);
-
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [deliveryType, setDeliveryType] = useState('delivery');
   const [showContactInfo, setShowContactInfo] = useState(false);
   const [selectedTip, setSelectedTip] = useState(0);
 

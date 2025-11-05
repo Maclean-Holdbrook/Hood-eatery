@@ -67,7 +67,7 @@ const Cart = () => {
               Proceed to Checkout
             </Link>
             <Link to="/menu" className="btn btn-outline btn-block">
-              Continue Shopping
+              Browse Menu
             </Link>
           </div>
         </div>

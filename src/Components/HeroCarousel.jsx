@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 const HeroCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -75,13 +74,6 @@ const HeroCarousel = () => {
         ))}
       </div>
 
-      <button className="carousel-btn prev" onClick={prevSlide} aria-label="Previous slide">
-        <FaChevronLeft />
-      </button>
-
-      <button className="carousel-btn next" onClick={nextSlide} aria-label="Next slide">
-        <FaChevronRight />
-      </button>
 
       <div className="carousel-indicators">
         {slides.map((_, index) => (

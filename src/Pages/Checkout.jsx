@@ -1,16 +1,11 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { ordersAPI } from '../services/api';
-import { Autocomplete, useLoadScript } from '@react-google-maps/api';
 import PaystackPop from '@paystack/inline-js';
 import { FaArrowLeft, FaTrash, FaMinus, FaPlus, FaUser, FaCreditCard } from 'react-icons/fa';
 
-const defaultCenter = {
-  lat: 5.6037,  // Accra, Ghana
-  lng: -0.1870
-};
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -20,17 +15,7 @@ const Checkout = () => {
 
   // Memoize libraries to prevent re-renders
   const libraries = useMemo(() => ['places'], []);
-  const autocompleteRef = useRef(null);
 
-  // Load Google Maps with Places library
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-    libraries
-  });
-
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [deliveryType, setDeliveryType] = useState('delivery');
   const [showContactInfo, setShowContactInfo] = useState(false);
   const [selectedTip, setSelectedTip] = useState(0);
 
@@ -42,53 +27,6 @@ const Checkout = () => {
     paymentMethod: 'card',
     notes: ''
   });
-
-  const [position, setPosition] = useState(null);
-
-  // Get user's current location
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const userLocation = {
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude
-          };
-          setPosition(userLocation);
-        },
-        (err) => {
-          console.error('Error getting location:', err);
-          setPosition(defaultCenter);
-        }
-      );
-    } else {
-      setPosition(defaultCenter);
-    }
-  }, []);
-
-  // Handle autocomplete load
-  const onAutocompleteLoad = (autocompleteInstance) => {
-    autocompleteRef.current = autocompleteInstance;
-  };
-
-  // Handle place selection
-  const onPlaceChanged = () => {
-    if (autocompleteRef.current !== null) {
-      const place = autocompleteRef.current.getPlace();
-
-      if (place.geometry) {
-        const location = {
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng()
-        };
-        setPosition(location);
-        setFormData(prev => ({
-          ...prev,
-          deliveryAddress: place.formatted_address || ''
-        }));
-      }
-    }
-  };
 
   // Reset tip when switching to pickup mode
   useEffect(() => {
@@ -109,8 +47,8 @@ const Checkout = () => {
     customerEmail: formData.customerEmail,
     customerPhone: formData.customerPhone,
     deliveryAddress: formData.deliveryAddress,
-    deliveryLat: position?.lat || 0,
-    deliveryLng: position?.lng || 0,
+    deliveryLat: 0,
+    deliveryLng: 0,
     items: cart.map(item => ({
       id: item.id,
       name: item.name,
@@ -199,8 +137,8 @@ const Checkout = () => {
       return;
     }
 
-    if (deliveryType === 'delivery' && (!position || (position.lat === 0 && position.lng === 0))) {
-      setError('Please select a delivery location on the map');
+    if (deliveryType === 'delivery' && !formData.deliveryAddress.trim()) {
+      setError('Please enter a delivery address');
       return;
     }
 
@@ -390,35 +328,14 @@ const Checkout = () => {
               {deliveryType === 'delivery' && (
                 <div className="form-group">
                   <label>Delivery Address *</label>
-                  <div className="address-autocomplete-container">
-                    {loadError && (
-                      <div className="map-error">
-                        <p>Error loading Google Maps</p>
-                        <p className="help-text">Please check your Google Maps API key</p>
-                      </div>
-                    )}
-                    {!isLoaded && !loadError && (
-                      <div className="map-loading">
-                        <p>Loading address search...</p>
-                      </div>
-                    )}
-                    {isLoaded && !loadError && (
-                      <Autocomplete
-                        onLoad={onAutocompleteLoad}
-                        onPlaceChanged={onPlaceChanged}
-                        options={{
-                          componentRestrictions: { country: 'gh' },
-                          fields: ['formatted_address', 'geometry', 'name']
-                        }}
-                      >
-                        <input
-                          type="text"
-                          placeholder="Enter your delivery address"
-                          className="autocomplete-input"
-                        />
-                      </Autocomplete>
-                    )}
-                  </div>
+                  <input
+                    type="text"
+                    name="deliveryAddress"
+                    value={formData.deliveryAddress}
+                    onChange={handleChange}
+                    placeholder="Enter your delivery address"
+                    required
+                  />
                 </div>
               )}
             </div>
